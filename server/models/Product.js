@@ -20,7 +20,6 @@ productSchema.set("toJSON", { virtuals: true });
 //   return product;
 // };
 
-
 productSchema.virtual("slug").get(function () {
   return slugify(this.name, {
     replacement: "-", // replace spaces with replacement character, defaults to `-`
