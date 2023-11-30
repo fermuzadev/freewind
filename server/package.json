@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
-    "seeders": "node seeders/runAllSeeders.js"
+    "start": "node server.js",
+    "seeders": "node seeders/runAllSeeders.js",
+    "build": "npm run build"
   },
   "keywords": [],
   "author": "Esteban Castañeira, Ivanna Sugliano, Lorena Rincon, Nicolas Martinez, Victoria Perera",
