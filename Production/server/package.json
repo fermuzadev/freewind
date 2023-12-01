@@ -1,6 +1,6 @@
 {
-  "name": "unicorn-bear",
-  "description": "Hack Academy - Unicorn beer server",
+  "name": "freewind",
+  "description": "No country BackEnd Project",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "Nicolas Martinez, Fernando Ariel Muzaber",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
     "@supabase/supabase-js": "^2.26.0",
