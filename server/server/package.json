@@ -8,9 +8,6 @@
     "start": "node .",
     "seeders": "node seeders/runAllSeeders.js"
   },
-  "engines": {
-    "node": "18.x"
-  },
   "keywords": [],
   "author": "Nicolas Martinez, Fernando Ariel Muzaber",
   "license": "MIT",
