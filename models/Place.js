@@ -1,27 +1,20 @@
 const { mongoose } = require("../db");
 const slugify = require("slugify");
 
-const packageSchema = new mongoose.Schema({
-  price: Number,
-  stock: Number,
-  featured: Boolean,
-  photos: Array,
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-  name: String,
-});
-packageSchema.set("toJSON", { virtuals: true });
+const placeSchema = new mongoose.Schema({
+  name: { type: String },
+  description: { type: String },
+  imgs: [],
+  coords: [],
+  reviews: [],
 
-packageSchema.methods.toJSON = function () {
-  const package = this._doc;
-  package.id = this._id.toString();
-  delete package._id;
-  return package;
-};
+},
+  { timestamps: true },
+);
+placeSchema.set("toJSON", { virtuals: true });
 
-packageSchema.virtual("slug").get(function () {
+
+placeSchema.virtual("slug").get(function () {
   return slugify(this.name, {
     replacement: "-", // replace spaces with replacement character, defaults to `-`
     remove: undefined, // remove characters that match regex, defaults to `undefined`
@@ -32,4 +25,4 @@ packageSchema.virtual("slug").get(function () {
   });
 });
 
-module.exports = mongoose.model("Packages", packageSchema);
+module.exports = mongoose.model("places", placeSchema);
