@@ -27,7 +27,7 @@ app.listen(PORT, () => {
     } catch (error) {
       console.error("Error al realizar la solicitud GET:", error.message);
     }
-  }, 720 * 60 * 1000);
+  }, 5 * 60 * 1000);
 });
 
 process.on("SIGINT", function () {
