@@ -1,12 +1,20 @@
+import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoLogOutOutline } from "react-icons/io5";
 import { TiThMenu } from "react-icons/ti";
 import Logo from "../../assets/wind.png";
 import { TbWorld } from "react-icons/tb";
 import ThemeController from "./ThemeController/ThemeController";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { clearToken } from "../../layouts/auth/reducers/authSlice";
+
 
 function Navbar() {
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const token = user?.token;
   const [menu, setMenu] = useState(false);
 
   const handleChange = () => {
@@ -19,6 +27,11 @@ function Navbar() {
 
   const openForm = () => {
     setMenu(false);
+  };
+
+  const handleLogout = async () => {
+    dispatch(clearToken());
+    await axios.get(`${import.meta.env.VITE_API_URL}/auth/logout`);
   };
 
   return (
@@ -72,12 +85,33 @@ function Navbar() {
               <TbWorld className="mt-1.5" />
               <span>|EUR</span>
             </span>
-            <Link
-              to="/login"
-              className="px-4 py-2 border-2 border-none bg-black text-white hover:text-white hover:bg-gray-800 transition-all rounded-full"
-            >
-              Iniciar sesión
-            </Link>
+            {token ? (
+              <div className="flex items-center gap-3">
+                <div className="flex">
+                  <Link to={`/user/${user.id}`} className="btn rounded-full">
+                    <img
+                      className="w-8 h-8 rounded-full"
+                      src={`https://source.unsplash.com/random/128x128?sig=${user.id}`}
+                    />
+                    <span className="ml-2">
+                      {user.firstname} {user.lastname}
+                    </span>
+                  </Link>
+                </div>
+                <IoLogOutOutline
+                  size={25}
+                  className="cursor-pointer "
+                  onClick={handleLogout}
+                ></IoLogOutOutline>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="px-4 py-2 border-2 border-none bg-black text-white hover:text-white hover:bg-gray-800 transition-all rounded-full"
+              >
+                Iniciar sesión
+              </Link>
+            )}
           </div>
 
           <div className="md:hidden flex items-center">
@@ -95,9 +129,8 @@ function Navbar() {
             onClick={closeMenu}
           >
             <div
-              className={`${
-                menu ? "translate-x-0" : "-translate-x-full"
-              } lg:hidden fixed top-0 left-0 z-40 h-screen py-10 px-7 overflow-y-auto transition-transform -translate-x-full bg-white w-72 sm:w-96 flex items-center flex-col`}
+              className={`${menu ? "translate-x-0" : "-translate-x-full"
+                } lg:hidden fixed top-0 left-0 z-40 h-screen py-10 px-7 overflow-y-auto transition-transform -translate-x-full bg-white w-72 sm:w-96 flex items-center flex-col`}
               tabIndex={-1}
               aria-labelledby="drawer-left-label"
             >

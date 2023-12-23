@@ -44,9 +44,6 @@ async function signUp(req, res) {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       email: req.body.email,
-      phone: req.body.phone,
-      address: req.body.address,
-      shippingAddress: req.body.shippingAddress,
       password: req.body.password,
     });
 
@@ -69,9 +66,7 @@ async function signUp(req, res) {
 
 async function logOut(req, res) {
   res.clearCookie("token");
-  res.json({ message: "Logged out successfully" });
+  return res.json({ message: "Logged out successfully" });
 }
-
-
 
 module.exports = { login, signUp, logOut };

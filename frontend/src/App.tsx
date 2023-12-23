@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
-import Home from "./layouts/Home/Home";
 import Navbar from "./components/Navbar/Navbar";
 import Login from "./layouts/auth/login/Login";
 import Register from "./layouts/auth/register/Register";
@@ -9,6 +8,8 @@ import Profile from "./layouts/profile/Profile";
 import Search from "./layouts/search/SearchPage";
 import Place from "./layouts/place/Place";
 import Footer from "./components/Footer/Footer";
+import Home from "./layouts/home/Home";
+import NotFound from "./layouts/notFound/404";
 
 function App() {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -18,8 +19,26 @@ function App() {
       <Navbar></Navbar>
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register></Register>}></Route>
+        <Route
+          path="/login"
+          element={
+            !user ? (
+              <Login />
+            ) : (
+              <Navigate to="/" replace={true} />
+            )
+          }
+        ></Route>
+        <Route
+          path="/register"
+          element={
+            !user ? (
+              <Register />
+            ) : (
+              <Navigate to="/" replace={true} />
+            )
+          }
+        ></Route>
         <Route path="/search" element={<Search></Search>}></Route>
         <Route path="/place/:id" element={<Place></Place>}></Route>
         <Route
@@ -32,6 +51,7 @@ function App() {
             )
           }
         ></Route>
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
       <Footer></Footer>
     </>

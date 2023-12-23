@@ -4,20 +4,23 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 // Define a type for the slice state
 interface User {
     token: string,
-    name: string
+    id: string,
+    email: string,
+    address: string,
+    phone: string,
+    firstname: string,
+    lastname: string,
 }
 
+
 interface authState {
-    user: User
+    user: User | null
 }
 
 
 // Define the initial state using that type
 const initialState: authState = {
-    user: {
-        token: "",
-        name: ""
-    }
+    user: null
 }
 
 export const authSlice = createSlice({
@@ -26,11 +29,13 @@ export const authSlice = createSlice({
     reducers: {
         setUser(state, action: PayloadAction<User>) {
             state.user = action.payload
+        },
+        clearToken(state) {
+            state.user = null
         }
-
     },
 })
 
-export const { setUser } = authSlice.actions
+export const { setUser, clearToken } = authSlice.actions
 
 export default authSlice.reducer

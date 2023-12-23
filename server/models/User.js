@@ -1,4 +1,5 @@
 const { mongoose, Schema } = require("../db");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
@@ -16,12 +17,13 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-// userSchema.set("toJSON", { virtuals: true });
 userSchema.methods.toJSON = function () {
   const user = this._doc;
-  user.id = this._id.toString();
+  user.id = this._id;
   delete user._id;
+
   return user;
+
 };
 
 userSchema.pre("save", async function (next) {

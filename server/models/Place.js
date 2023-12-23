@@ -1,18 +1,23 @@
 const { mongoose } = require("../db");
 const slugify = require("slugify");
 
-const placeSchema = new mongoose.Schema({
-  name: { type: String },
-  description: { type: String },
-  imgs: [],
-  coords: [],
-  reviews: [],
-
-},
+const placeSchema = new mongoose.Schema(
+  {
+    name: { type: String },
+    description: { type: String },
+    imgs: [],
+    coords: [],
+    reviews: { type: [mongoose.Schema.Types.ObjectId], ref: "reviews" },
+  },
   { timestamps: true },
 );
-placeSchema.set("toJSON", { virtuals: true });
 
+placeSchema.methods.toJSON = function () {
+  const place = this._doc;
+  place.id = this._id;
+  delete place._id;
+  return place;
+};
 
 placeSchema.virtual("slug").get(function () {
   return slugify(this.name, {
