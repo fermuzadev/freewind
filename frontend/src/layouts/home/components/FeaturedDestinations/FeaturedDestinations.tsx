@@ -4,15 +4,22 @@ import NextArrow from "../../../../components/NextArrow/NextArrow";
 import PrevArrow from "../../../../components/PrevArrow/PrevArrow";
 import SubtitleSection from "../../../../components/SubtitleSection/SubtitleSection";
 import TitleSection from "../../../../components/TitleSection/TitleSection";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../store/store";
+import getPlaces from '../../../../api/api'
+import { Place } from '../../../../api/api'
+
+
+
+
+
+
+
 
 function FeaturedDestinations() {
-  const places = useSelector((state: RootState) => state.places.places);
-
+  
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const carousel = useRef<HTMLDivElement>(null);
+  const [array, setArray] = useState<Place[]>()
   const movePrev = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prevState) => prevState - 1);
@@ -54,6 +61,19 @@ function FeaturedDestinations() {
       ? carousel.current.scrollWidth - carousel.current.offsetWidth
       : 0;
   }, []);
+  
+  async function fetchDataAndLog() {
+    try {
+      const places = await getPlaces();
+      setArray(places)
+    } catch (error) {
+      // Manejar el error si es necesario
+    }
+  }
+  
+  // Llamada a la función de ejemplo
+  fetchDataAndLog();
+  
 
   return (
     <section className="py-4 overflow-hidden">
@@ -69,15 +89,23 @@ function FeaturedDestinations() {
           ref={carousel}
           className="carousel-container relative flex overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
         >
-          {places &&
-            places.map((place) => (
+          {array&& array.map(
+            ({ _id, name, imgs, description }) => (
               <div
-                key={place.id}
+                key={_id}
                 className={`carousel-item text-center relative lg:w-1/4 md:w-1/3 sm:w-1/3 w-1/2 snap-start`}
               >
-                <CardContent place={place} />
+                <CardContent
+                  name={name}
+                  location={name}
+                  description= {description}
+                  image={imgs[0]}
+                  rating = {4.5}
+                  price={1000}
+                />
               </div>
-            ))}
+            )
+          )}
         </div>
         <NextArrow onClick={moveNext} disabled={isDisabled("next")} />
       </div>
